@@ -62,10 +62,9 @@ class TaskQueue implements QueueInterface
     public function slice($offset, $limit)
     {
         $iterator = $this->queue->slice($offset, $limit);
-        $serializer = $this->serializer;
 
-        return new CallbackIterator($iterator, function ($item) use ($serializer) {
-            return $serializer->deserialize($item);
+        return new CallbackIterator($iterator, function ($item) {
+            return $this->serializer->deserialize($item);
         });
     }
 
