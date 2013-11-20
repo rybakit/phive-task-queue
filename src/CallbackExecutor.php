@@ -25,7 +25,7 @@ class CallbackExecutor extends AbstractExecutor
     {
         $parameters = $this->getReflection()->getParameters();
 
-        $arguments = array($task->getPayload());
+        $arguments = [$task->getPayload()];
         array_shift($parameters);
 
         foreach ($parameters as $param) {
