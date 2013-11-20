@@ -1,0 +1,28 @@
+{
+    "name": "rybakit/phive-task-queue",
+    "description": "A simple task queue on top of rybakit/phive-queue",
+    "keywords": ["queue job task worker scheduler priority delayed"],
+    "homepage": "https://github.com/rybakit/phive-task-queue",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eugene Leonovich",
+            "email": "gen.work@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "rybakit/phive-queue": "dev-master",
+        "psr/log": "~1.0"
+
+    },
+    "suggest": {
+        "symfony/debug": ""
+    },
+    "autoload": {
+        "psr-0": {
+            "Phive\\TaskQueue": "src/"
+        }
+    }
+}
