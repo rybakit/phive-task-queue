@@ -25,6 +25,9 @@ class Task extends AbstractTask
      */
     private $retryDelay = 60;
 
+    /**
+     * {@inheritdoc}
+     */
     public function reschedule()
     {
         if ($this->maxErrorCount && $this->errorCount >= $this->maxErrorCount) {
@@ -33,7 +36,7 @@ class Task extends AbstractTask
 
         $this->errorCount++;
 
-        return time();
+        return time()+ $this->retryDelay;
     }
 
     /**
@@ -74,14 +77,6 @@ class Task extends AbstractTask
     public function getRetryDelay()
     {
         return $this->retryDelay;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return get_class($this);
     }
 
     public function __clone()

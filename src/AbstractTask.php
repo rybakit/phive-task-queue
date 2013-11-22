@@ -18,6 +18,9 @@ abstract class AbstractTask implements TaskInterface
         $this->payload = $payload;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPayload()
     {
         return $this->payload;
