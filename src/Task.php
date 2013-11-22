@@ -36,7 +36,7 @@ class Task extends AbstractTask
 
         $this->errorCount++;
 
-        return time()+ $this->retryDelay;
+        return time() + $this->retryDelay;
     }
 
     /**
