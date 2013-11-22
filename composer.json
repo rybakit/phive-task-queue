@@ -1,6 +1,6 @@
 {
     "name": "rybakit/phive-task-queue",
-    "description": "A simple task queue on top of rybakit/phive-queue",
+    "description": "A lightweight task queue on top of rybakit/phive-queue",
     "keywords": ["queue job task worker scheduler priority delayed"],
     "homepage": "https://github.com/rybakit/phive-task-queue",
     "type": "library",
