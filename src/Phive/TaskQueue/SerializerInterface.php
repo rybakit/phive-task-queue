@@ -14,7 +14,7 @@ interface SerializerInterface
     /**
      * @param string $data
      *
-     * @return TaskInterface
+     * @return mixed
      */
     public function deserialize($data);
 }
