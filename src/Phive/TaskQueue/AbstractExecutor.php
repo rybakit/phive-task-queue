@@ -19,13 +19,17 @@ abstract class AbstractExecutor
         $logger = $this->context->getLogger();
 
         try {
-            $task = $this->context->getTaskQueue()->pop();
+            $task = $this->context->getQueue()->pop();
         } catch (\Exception $e) {
             $logger->error($e->getMessage());
             return false;
         }
 
         $logger->debug(sprintf('Dequeued "%s".', $task));
+
+        if (!$task instanceof TaskInterface) {
+            $task = new Task($task);
+        }
 
         try {
             $this->doExecute($task);
@@ -35,7 +39,7 @@ abstract class AbstractExecutor
         } catch (\Exception $e) {
             if ($eta = $task->reschedule()) {
                 $logger->error(sprintf('An error occurred while executing task "%s": %s', $task, $e->getMessage()));
-                $this->context->getTaskQueue()->push($task, $eta);
+                $this->context->getQueue()->push($task, $eta);
             } else {
                 $logger->error(sprintf('Task "%s" failed: %s.', $task, $e->getMessage()));
             }

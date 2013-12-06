@@ -5,9 +5,9 @@ namespace Phive\TaskQueue;
 interface ExecutionContextInterface
 {
     /**
-     * @return TaskQueue
+     * @return \Phive\Queue\QueueInterface
      */
-    public function getTaskQueue();
+    public function getQueue();
 
     /**
      * @return \Psr\Log\LoggerInterface

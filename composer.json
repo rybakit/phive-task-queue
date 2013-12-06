@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Phive\\TaskQueue": "src/"
+            "Phive\\TaskQueue\\": "src/"
         }
     }
 }

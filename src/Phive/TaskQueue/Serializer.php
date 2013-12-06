@@ -7,9 +7,9 @@ class Serializer implements SerializerInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize(TaskInterface $task)
+    public function serialize($data)
     {
-        return base64_encode(serialize($task));
+        return base64_encode(serialize($data));
     }
 
     /**

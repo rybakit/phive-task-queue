@@ -5,17 +5,17 @@ namespace Phive\TaskQueue;
 use Phive\Queue\CallbackIterator;
 use Phive\Queue\QueueInterface;
 
-class TaskQueue implements QueueInterface
+class SerializerAwareQueue implements QueueInterface
 {
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
     /**
      * @var QueueInterface
      */
     private $queue;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
 
     public function __construct(QueueInterface $queue, SerializerInterface $serializer = null)
     {
@@ -24,22 +24,10 @@ class TaskQueue implements QueueInterface
     }
 
     /**
-     * @return QueueInterface
-     */
-    public function getQueue()
-    {
-        return $this->queue;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function push($item, $eta = null)
     {
-        if (!$item instanceof TaskInterface) {
-            $item = new Task($item);
-        }
-
         $item = $this->serializer->serialize($item);
         $this->queue->push($item, $eta);
     }

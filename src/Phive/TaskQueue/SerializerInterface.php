@@ -5,11 +5,11 @@ namespace Phive\TaskQueue;
 interface SerializerInterface
 {
     /**
-     * @param TaskInterface $task
+     * @param mixed $data
      *
      * @return string
      */
-    public function serialize(TaskInterface $task);
+    public function serialize($data);
 
     /**
      * @param string $data

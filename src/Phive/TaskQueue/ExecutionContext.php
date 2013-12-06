@@ -2,15 +2,16 @@
 
 namespace Phive\TaskQueue;
 
+use Phive\Queue\QueueInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class ExecutionContext implements ExecutionContextInterface
 {
     /**
-     * @var TaskQueue
+     * @var QueueInterface
      */
-    private $taskQueue;
+    private $queue;
 
     /**
      * @var LoggerInterface
@@ -18,21 +19,21 @@ class ExecutionContext implements ExecutionContextInterface
     private $logger;
 
     /**
-     * @param TaskQueue            $taskQueue
+     * @param QueueInterface       $queue
      * @param LoggerInterface|null $logger
      */
-    public function __construct(TaskQueue $taskQueue, LoggerInterface $logger = null)
+    public function __construct(QueueInterface $queue, LoggerInterface $logger = null)
     {
-        $this->taskQueue = $taskQueue;
+        $this->queue = $queue;
         $this->logger = $logger ?: new NullLogger();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTaskQueue()
+    public function getQueue()
     {
-        return $this->taskQueue;
+        return $this->queue;
     }
 
     /**
