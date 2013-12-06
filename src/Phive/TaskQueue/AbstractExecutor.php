@@ -12,19 +12,22 @@ abstract class AbstractExecutor
     }
 
     /**
-     * @return bool
+     * @return bool True if a task was processed, false otherwise.
      */
     public function execute()
     {
-        $logger = $this->context->getLogger();
-
         try {
             $task = $this->context->getQueue()->pop();
         } catch (\Exception $e) {
-            $logger->error($e->getMessage());
+            $this->context->getLogger()->error($e->getMessage());
             return false;
         }
 
+        if (false === $task) {
+            return false;
+        }
+
+        $logger = $this->context->getLogger();
         $logger->debug(sprintf('Dequeued "%s".', $task));
 
         if (!$task instanceof TaskInterface) {
