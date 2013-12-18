@@ -15,10 +15,6 @@
         "php": ">=5.4.0",
         "rybakit/phive-queue": "dev-master",
         "psr/log": "~1.0"
-
-    },
-    "suggest": {
-        "symfony/debug": ""
     },
     "autoload": {
         "psr-0": {
