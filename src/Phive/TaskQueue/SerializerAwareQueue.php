@@ -2,8 +2,7 @@
 
 namespace Phive\TaskQueue;
 
-use Phive\Queue\CallbackIterator;
-use Phive\Queue\QueueInterface;
+use Phive\Queue\Queue\QueueInterface;
 
 class SerializerAwareQueue implements QueueInterface
 {
@@ -37,23 +36,9 @@ class SerializerAwareQueue implements QueueInterface
      */
     public function pop()
     {
-        if (false !== $item = $this->queue->pop()) {
-            $item = $this->serializer->deserialize($item);
-        }
+        $item = $this->queue->pop();
 
-        return $item;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function slice($offset, $limit)
-    {
-        $iterator = $this->queue->slice($offset, $limit);
-
-        return new CallbackIterator($iterator, function ($item) {
-            return $this->serializer->deserialize($item);
-        });
+        return $this->serializer->deserialize($item);
     }
 
     /**

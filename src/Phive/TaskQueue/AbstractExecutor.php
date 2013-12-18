@@ -2,6 +2,8 @@
 
 namespace Phive\TaskQueue;
 
+use Phive\Queue\Exception\ExceptionInterface;
+
 abstract class AbstractExecutor
 {
     protected $context;
@@ -18,12 +20,8 @@ abstract class AbstractExecutor
     {
         try {
             $task = $this->context->getQueue()->pop();
-        } catch (\Exception $e) {
+        } catch (ExceptionInterface $e) {
             $this->context->getLogger()->error($e->getMessage());
-            return false;
-        }
-
-        if (false === $task) {
             return false;
         }
 
