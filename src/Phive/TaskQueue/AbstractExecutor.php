@@ -25,12 +25,12 @@ abstract class AbstractExecutor
             return false;
         }
 
-        $logger = $this->context->getLogger();
-        $logger->debug(sprintf('Dequeued "%s".', $task));
-
         if (!$task instanceof TaskInterface) {
             $task = new Task($task);
         }
+
+        $logger = $this->context->getLogger();
+        $logger->debug(sprintf('Dequeued "%s".', $task));
 
         try {
             $this->doExecute($task);
