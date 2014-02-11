@@ -3,7 +3,7 @@
 namespace Phive\TaskQueue;
 
 use Phive\Queue\Exception\ExceptionInterface;
-use Phive\Queue\Exception\NoItemException;
+use Phive\Queue\Exception\NoItemAvailableException;
 
 abstract class AbstractExecutor
 {
@@ -24,8 +24,8 @@ abstract class AbstractExecutor
         try {
             $task = $this->context->getQueue()->pop();
         } catch (ExceptionInterface $e) {
-            $e instanceof NoItemException
-                ? $logger->debug('Nothing to execute.')
+            $e instanceof NoItemAvailableException
+                ? $logger->debug($e->getMessage())
                 : $logger->error($e->getMessage());
 
             return false;
