@@ -1,4 +1,4 @@
 <?php
 
 $loader = require __DIR__.'/../vendor/autoload.php';
-$loader->add('Phive\\TaskQueue\\Tests\\', __DIR__);
+$loader->addPsr4('Phive\\TaskQueue\\Tests\\', __DIR__);
