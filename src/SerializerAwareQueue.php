@@ -2,12 +2,12 @@
 
 namespace Phive\TaskQueue;
 
-use Phive\Queue\Queue\QueueInterface;
+use Phive\Queue\Queue\Queue;
 
-class SerializerAwareQueue implements QueueInterface
+class SerializerAwareQueue implements Queue
 {
     /**
-     * @var QueueInterface
+     * @var Queue
      */
     private $queue;
 
@@ -16,7 +16,7 @@ class SerializerAwareQueue implements QueueInterface
      */
     private $serializer;
 
-    public function __construct(QueueInterface $queue, SerializerInterface $serializer = null)
+    public function __construct(Queue $queue, SerializerInterface $serializer = null)
     {
         $this->queue = $queue;
         $this->serializer = $serializer ?: new Serializer();

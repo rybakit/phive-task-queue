@@ -5,7 +5,7 @@ namespace Phive\TaskQueue;
 interface ExecutionContextInterface
 {
     /**
-     * @return \Phive\Queue\Queue\QueueInterface
+     * @return \Phive\Queue\Queue\Queue
      */
     public function getQueue();
 
