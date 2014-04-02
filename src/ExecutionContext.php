@@ -2,7 +2,7 @@
 
 namespace Phive\TaskQueue;
 
-use Phive\Queue\Queue\Queue;
+use Phive\Queue\Queue;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 

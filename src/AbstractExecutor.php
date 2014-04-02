@@ -2,8 +2,8 @@
 
 namespace Phive\TaskQueue;
 
-use Phive\Queue\Exception\QueueException;
-use Phive\Queue\Exception\NoItemAvailableException;
+use Phive\Queue\QueueException;
+use Phive\Queue\NoItemAvailableException;
 
 abstract class AbstractExecutor
 {
