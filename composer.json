@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "rybakit/phive-queue": "dev-master",
+        "rybakit/phive-queue": "~1.0@dev",
         "psr/log": "~1.0"
     },
     "autoload": {
