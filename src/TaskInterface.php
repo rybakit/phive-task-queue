@@ -14,7 +14,9 @@ interface TaskInterface
     /**
      * Reschedules the task in the future (when an unexpected error occurred during execution).
      *
-     * @return int|bool The timestamp of the next retry, false otherwise
+     * @return int The timestamp of the next retry
+     *
+     * @throws TaskFailedException
      */
     public function reschedule();
 

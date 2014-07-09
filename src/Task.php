@@ -5,18 +5,18 @@ namespace Phive\TaskQueue;
 class Task extends AbstractTask
 {
     /**
-     * The number of times this task has been failed.
+     * The number of failed attempts.
      *
      * @var int
      */
-    private $errorCount = 0;
+    private $attempt = 0;
 
     /**
-     * The maximum number of fails for this task.
+     * The maximum number of failed attempts.
      *
      * @var int
      */
-    private $maxErrorCount = 2;
+    private $maxAttempts = 3;
 
     /**
      * The time interval, in seconds, between task retries.
@@ -30,11 +30,14 @@ class Task extends AbstractTask
      */
     public function reschedule()
     {
-        if ($this->maxErrorCount && $this->errorCount >= $this->maxErrorCount) {
-            return false;
+        if (!$this->maxAttempts || $this->attempt < $this->maxAttempts) {
+            throw new TaskFailedException(sprintf(
+                'The maximum number of failed attempts (%d) has been reached.',
+                $this->maxAttempts
+            ));
         }
 
-        $this->errorCount++;
+        $this->attempt++;
 
         return time() + $this->retryDelay;
     }
@@ -42,25 +45,25 @@ class Task extends AbstractTask
     /**
      * @return int
      */
-    public function getErrorCount()
+    public function getAttempt()
     {
-        return $this->errorCount;
+        return $this->attempt;
     }
 
     /**
-     * @param int $count
+     * @param int $maxAttempts
      */
-    public function setMaxErrorCount($count)
+    public function setMaxAttempts($maxAttempts)
     {
-        $this->maxErrorCount = $count;
+        $this->maxAttempts = $maxAttempts;
     }
 
     /**
      * @return int
      */
-    public function getMaxErrorCount()
+    public function getMaxAttempts()
     {
-        return $this->maxErrorCount;
+        return $this->maxAttempts;
     }
 
     /**
@@ -81,6 +84,6 @@ class Task extends AbstractTask
 
     public function __clone()
     {
-        $this->errorCount = 0;
+        $this->attempt = 0;
     }
 }

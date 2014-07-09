@@ -43,12 +43,15 @@ abstract class AbstractExecutor
         } catch (TaskFailedException $e) {
             $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
         } catch (\Exception $e) {
-            if ($eta = $task->reschedule()) {
-                $logger->error(sprintf('An error occurred while executing task "%s": %s', $task, $e->getMessage()));
-                $this->context->getQueue()->push($task, $eta);
-            } else {
-                $logger->error(sprintf('Task "%s" failed: %s.', $task, $e->getMessage()));
+            try {
+                $eta = $task->reschedule();
+            } catch (TaskFailedException $e) {
+                $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
+                return true;
             }
+
+            $logger->error(sprintf('An error occurred while executing task "%s": %s', $task, $e->getMessage()));
+            $this->context->getQueue()->push($task, $eta);
         }
 
         return true;
