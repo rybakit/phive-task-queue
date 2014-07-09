@@ -9,12 +9,12 @@ class SerializerAwareQueue implements Queue
     /**
      * @var Queue
      */
-    private $queue;
+    protected $queue;
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    protected $serializer;
 
     public function __construct(Queue $queue, SerializerInterface $serializer = null)
     {
