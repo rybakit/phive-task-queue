@@ -33,9 +33,9 @@ class SimpleSerializerTest extends \PHPUnit_Framework_TestCase
             [null],
             [false],
             [0],
-            ['string'],
+            ['foo bar'],
             [new \stdClass()],
-            [[null, false, 0, 'string', [], new \stdClass()]],
+            [[null, false, 0, 'foo bar', new \stdClass(), []]],
         ];
     }
 }
