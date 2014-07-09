@@ -2,88 +2,28 @@
 
 namespace Phive\TaskQueue;
 
-class Task extends AbstractTask
+interface Task
 {
     /**
-     * The number of failed attempts.
+     * Retrieves task payload.
      *
-     * @var int
+     * @return mixed
      */
-    private $attempt = 0;
+    public function getPayload();
 
     /**
-     * The maximum number of failed attempts.
+     * Reschedules the task in the future (when an unexpected error occurred during execution).
      *
-     * @var int
-     */
-    private $maxAttempts = 3;
-
-    /**
-     * The time interval, in seconds, between task retries.
+     * @return int The timestamp of the next retry
      *
-     * @var int
+     * @throws TaskFailedException
      */
-    private $retryDelay = 60;
+    public function reschedule();
 
     /**
-     * {@inheritdoc}
+     *  Returns a string representation of the task.
+     *
+     * @return string
      */
-    public function reschedule()
-    {
-        if (!$this->maxAttempts || $this->attempt < $this->maxAttempts) {
-            throw new TaskFailedException(sprintf(
-                'The maximum number of failed attempts (%d) has been reached.',
-                $this->maxAttempts
-            ));
-        }
-
-        $this->attempt++;
-
-        return time() + $this->retryDelay;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAttempt()
-    {
-        return $this->attempt;
-    }
-
-    /**
-     * @param int $maxAttempts
-     */
-    public function setMaxAttempts($maxAttempts)
-    {
-        $this->maxAttempts = $maxAttempts;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaxAttempts()
-    {
-        return $this->maxAttempts;
-    }
-
-    /**
-     * @param int $delay
-     */
-    public function setRetryDelay($delay)
-    {
-        $this->retryDelay = $delay;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRetryDelay()
-    {
-        return $this->retryDelay;
-    }
-
-    public function __clone()
-    {
-        $this->attempt = 0;
-    }
+    public function __toString();
 }

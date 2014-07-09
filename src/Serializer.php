@@ -2,21 +2,19 @@
 
 namespace Phive\TaskQueue;
 
-class Serializer implements SerializerInterface
+interface Serializer
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     *
+     * @return string
      */
-    public function serialize($data)
-    {
-        return base64_encode(serialize($data));
-    }
+    public function serialize($data);
 
     /**
-     * {@inheritdoc}
+     * @param string $data
+     *
+     * @return mixed
      */
-    public function deserialize($data)
-    {
-        return unserialize(base64_decode($data));
-    }
+    public function deserialize($data);
 }

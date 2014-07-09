@@ -4,9 +4,8 @@ namespace Phive\TaskQueue;
 
 use Phive\Queue\Queue;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
-class ExecutionContext implements ExecutionContextInterface
+class ExecutionContext
 {
     /**
      * @var Queue
@@ -19,17 +18,17 @@ class ExecutionContext implements ExecutionContextInterface
     private $logger;
 
     /**
-     * @param Queue                $queue
-     * @param LoggerInterface|null $logger
+     * @param Queue           $queue
+     * @param LoggerInterface $logger
      */
-    public function __construct(Queue $queue, LoggerInterface $logger = null)
+    public function __construct(Queue $queue, LoggerInterface $logger)
     {
         $this->queue = $queue;
-        $this->logger = $logger ?: new NullLogger();
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritdoc}
+     * @return Queue
      */
     public function getQueue()
     {
@@ -37,7 +36,7 @@ class ExecutionContext implements ExecutionContextInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return LoggerInterface
      */
     public function getLogger()
     {

@@ -4,7 +4,7 @@ namespace Phive\TaskQueue;
 
 use Phive\Queue\Queue;
 
-class SerializerAwareQueue implements Queue
+class TaskQueue implements Queue
 {
     /**
      * @var Queue
@@ -12,14 +12,14 @@ class SerializerAwareQueue implements Queue
     protected $queue;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     protected $serializer;
 
-    public function __construct(Queue $queue, SerializerInterface $serializer = null)
+    public function __construct(Queue $queue, Serializer $serializer)
     {
         $this->queue = $queue;
-        $this->serializer = $serializer ?: new Serializer();
+        $this->serializer = $serializer;
     }
 
     /**

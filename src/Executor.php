@@ -4,13 +4,23 @@ namespace Phive\TaskQueue;
 
 use Phive\Queue\QueueException;
 use Phive\Queue\NoItemAvailableException;
+use Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter;
 
-abstract class AbstractExecutor
+class Executor
 {
+    /**
+     * @var ExecutorAdapter
+     */
+    private $adapter;
+
+    /**
+     * @var ExecutionContext
+     */
     protected $context;
 
-    public function __construct(ExecutionContextInterface $context)
+    public function __construct(ExecutorAdapter $adapter, ExecutionContext $context)
     {
+        $this->adapter = $adapter;
         $this->context = $context;
     }
 
@@ -31,14 +41,14 @@ abstract class AbstractExecutor
             return false;
         }
 
-        if (!$task instanceof TaskInterface) {
-            $task = new Task($task);
+        if (!$task instanceof Task) {
+            $task = new GenericTask($task);
         }
 
         $logger->debug(sprintf('Dequeued "%s".', $task));
 
         try {
-            $this->doExecute($task);
+            $this->adapter->execute($task);
             $logger->info(sprintf('Task "%s" was successfully executed.', $task));
         } catch (TaskFailedException $e) {
             $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
@@ -56,6 +66,4 @@ abstract class AbstractExecutor
 
         return true;
     }
-
-    abstract protected function doExecute(TaskInterface $task);
 }

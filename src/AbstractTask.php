@@ -2,7 +2,7 @@
 
 namespace Phive\TaskQueue;
 
-abstract class AbstractTask implements TaskInterface
+abstract class AbstractTask implements Task
 {
     private $payload;
 

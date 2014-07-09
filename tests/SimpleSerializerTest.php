@@ -1,0 +1,41 @@
+<?php
+
+namespace Phive\TaskQueue\Tests;
+
+use Phive\TaskQueue\SimpleSerializer;
+
+class SimpleSerializerTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var SimpleSerializer
+     */
+    protected $serializer;
+
+    protected function setUp()
+    {
+        $this->serializer = new SimpleSerializer();
+    }
+
+    /**
+     * @dataProvider providerDataToSerialize
+     */
+    public function testSerialization($raw)
+    {
+        $serialized = $this->serializer->serialize($raw);
+
+        $this->assertInternalType('string', $serialized);
+        $this->assertEquals($raw, $this->serializer->deserialize($serialized));
+    }
+
+    public function providerDataToSerialize()
+    {
+        return [
+            [null],
+            [false],
+            [0],
+            ['string'],
+            [new \stdClass()],
+            [[null, false, 0, 'string', [], new \stdClass()]],
+        ];
+    }
+}
