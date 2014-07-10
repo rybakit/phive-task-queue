@@ -32,7 +32,7 @@ class GenericTask extends AbstractTask
      */
     public function reschedule()
     {
-        if (!$this->maxAttempts || $this->attempt < $this->maxAttempts) {
+        if ($this->maxAttempts && $this->attempt >= $this->maxAttempts) {
             throw new TaskFailedException(sprintf(
                 'The maximum number of failed attempts (%d) has been reached.',
                 $this->maxAttempts
