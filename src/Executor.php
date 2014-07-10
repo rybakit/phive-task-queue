@@ -5,6 +5,8 @@ namespace Phive\TaskQueue;
 use Phive\Queue\QueueException;
 use Phive\Queue\NoItemAvailableException;
 use Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter;
+use Phive\TaskQueue\Task\GenericTask;
+use Phive\TaskQueue\Task\Task;
 
 class Executor
 {

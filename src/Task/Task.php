@@ -1,6 +1,6 @@
 <?php
 
-namespace Phive\TaskQueue;
+namespace Phive\TaskQueue\Task;
 
 interface Task
 {
@@ -16,7 +16,7 @@ interface Task
      *
      * @return int The timestamp of the next retry
      *
-     * @throws TaskFailedException
+     * @throws \Phive\TaskQueue\TaskFailedException
      */
     public function reschedule();
 

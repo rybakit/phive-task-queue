@@ -1,6 +1,8 @@
 <?php
 
-namespace Phive\TaskQueue;
+namespace Phive\TaskQueue\Task;
+
+use Phive\TaskQueue\TaskFailedException;
 
 class GenericTask extends AbstractTask
 {

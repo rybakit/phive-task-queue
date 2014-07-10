@@ -1,6 +1,6 @@
 <?php
 
-namespace Phive\TaskQueue;
+namespace Phive\TaskQueue\Task;
 
 abstract class AbstractTask implements Task
 {

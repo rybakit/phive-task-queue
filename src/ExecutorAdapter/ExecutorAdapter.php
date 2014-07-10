@@ -3,7 +3,7 @@
 namespace Phive\TaskQueue\ExecutorAdapter;
 
 use Phive\TaskQueue\ExecutionContext;
-use Phive\TaskQueue\Task;
+use Phive\TaskQueue\Task\Task;
 
 interface ExecutorAdapter
 {
