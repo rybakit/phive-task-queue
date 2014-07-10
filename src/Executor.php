@@ -48,7 +48,7 @@ class Executor
         $logger->debug(sprintf('Dequeued "%s".', $task));
 
         try {
-            $this->adapter->execute($task);
+            $this->adapter->execute($task, $this->context);
             $logger->info(sprintf('Task "%s" was successfully executed.', $task));
         } catch (TaskFailedException $e) {
             $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
