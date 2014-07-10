@@ -9,12 +9,12 @@ class TaskQueue implements Queue
     /**
      * @var Queue
      */
-    protected $queue;
+    private $queue;
 
     /**
      * @var Serializer
      */
-    protected $serializer;
+    private $serializer;
 
     public function __construct(Queue $queue, Serializer $serializer)
     {
@@ -55,5 +55,21 @@ class TaskQueue implements Queue
     public function clear()
     {
         $this->queue->clear();
+    }
+
+    /**
+     * @return Queue
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
+
+    /**
+     * @return Serializer
+     */
+    public function getSerializer()
+    {
+        return $this->serializer;
     }
 }
