@@ -17,10 +17,6 @@ class ExecutionContext
      */
     private $logger;
 
-    /**
-     * @param Queue  $queue
-     * @param Logger $logger
-     */
     public function __construct(Queue $queue, Logger $logger)
     {
         $this->queue = $queue;
