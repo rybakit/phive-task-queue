@@ -4,7 +4,7 @@ namespace Phive\TaskQueue;
 
 use Phive\Queue\Queue;
 
-class TaskQueue implements Queue
+class SerializerAwareQueue implements Queue
 {
     /**
      * @var Queue
