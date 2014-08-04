@@ -21,7 +21,7 @@ interface Task
     public function reschedule();
 
     /**
-     *  Returns a string representation of the task.
+     * Returns a string representation of the task.
      *
      * @return string
      */
