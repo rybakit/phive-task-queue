@@ -17,7 +17,7 @@ class SimpleSerializerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerDataToSerialize
+     * @dataProvider provideDataToSerialize
      */
     public function testSerialization($raw)
     {
@@ -27,7 +27,7 @@ class SimpleSerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($raw, $this->serializer->deserialize($serialized));
     }
 
-    public function providerDataToSerialize()
+    public function provideDataToSerialize()
     {
         return [
             [null],
