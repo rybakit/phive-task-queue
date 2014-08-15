@@ -2,14 +2,33 @@
 
 namespace Phive\TaskQueue\ExecutorAdapter;
 
+use CallableArgumentsResolver\CallableArgumentsResolver;
 use Phive\TaskQueue\ExecutionContext;
-use Phive\TaskQueue\Task\Task;
 
 class CallableExecutorAdapter implements ExecutorAdapter
 {
-    public function execute(Task $task, ExecutionContext $context)
+    /**
+     * @var CallableArgumentsResolver
+     */
+    private $resolver;
+
+    public function __construct(callable $callable)
     {
-        list($callable, $args) = $task->getPayload();
-        call_user_func_array($callable, $args);
+        $this->resolver = new CallableArgumentsResolver($callable);
+    }
+
+    public function execute($task, ExecutionContext $context)
+    {
+        $parameters = [
+            'task' => $task,
+            $context->getLogger(),
+            $context->getQueue(),
+            $context,
+        ];
+
+        call_user_func_array(
+            $this->resolver->getCallable(),
+            $this->resolver->resolveArguments($parameters)
+        );
     }
 }

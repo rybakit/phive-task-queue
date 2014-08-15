@@ -2,11 +2,8 @@
 
 namespace Phive\TaskQueue;
 
-use Phive\Queue\QueueException;
 use Phive\Queue\NoItemAvailableException;
 use Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter;
-use Phive\TaskQueue\Task\GenericTask;
-use Phive\TaskQueue\Task\Task;
 
 class Executor
 {
@@ -35,35 +32,19 @@ class Executor
 
         try {
             $task = $this->context->getQueue()->pop();
-        } catch (QueueException $e) {
-            $e instanceof NoItemAvailableException
-                ? $logger->debug($e->getMessage())
-                : $logger->error($e->getMessage());
+        } catch (NoItemAvailableException $e) {
+            $logger->debug($e->getMessage(), ['exception' => $e]);
 
             return false;
         }
 
-        if (!$task instanceof Task) {
-            $task = new GenericTask($task);
-        }
-
-        $logger->debug(sprintf('Dequeued "%s".', $task));
+        $logger->info('Start executing.', ['task' => $task]);
 
         try {
             $this->adapter->execute($task, $this->context);
-            $logger->info(sprintf('Task "%s" was successfully executed.', $task));
-        } catch (TaskFailedException $e) {
-            $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
+            $logger->info('Task was successfully executed.', ['task' => $task]);
         } catch (\Exception $e) {
-            try {
-                $eta = $task->reschedule();
-            } catch (TaskFailedException $e) {
-                $logger->error(sprintf('Task "%s" failed: %s', $task, $e->getMessage()));
-                return true;
-            }
-
-            $logger->error(sprintf('An error occurred while executing task "%s": %s', $task, $e->getMessage()));
-            $this->context->getQueue()->push($task, $eta);
+            $logger->error('An error occurred while executing task.', ['task' => $task, 'exception' => $e]);
         }
 
         return true;
