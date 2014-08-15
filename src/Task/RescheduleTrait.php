@@ -4,7 +4,7 @@ namespace Phive\TaskQueue\Task;
 
 use Phive\TaskQueue\TaskFailedException;
 
-class GenericTask extends AbstractTask
+trait RescheduleTrait
 {
     /**
      * The number of failed attempts.

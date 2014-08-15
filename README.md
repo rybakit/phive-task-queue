@@ -55,6 +55,7 @@ while (true) {
 
 ```php
 // client.php
+
 use Phive\Queue\SysVQueue;
 
 $queue = new SysVQueue(0xDEADBEAF, true);
