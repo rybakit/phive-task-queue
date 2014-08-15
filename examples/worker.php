@@ -10,12 +10,13 @@ use Phive\TaskQueue\Executor;
 use Phive\TaskQueue\ExecutorAdapter\CallableExecutorAdapter;
 
 // create a simple job which will send the greeting to the log
+// function parameters will be resolved automatically
 $greeting = function (\stdClass $task, Logger $logger) {
     $logger->info(sprintf('Hello %s!', $task->name));
 };
 
 // create a queue
-// see a full list of available queues: https://github.com/rybakit/phive-queue#queues
+// see a list of available queues: https://github.com/rybakit/phive-queue#queues
 $queue = new SysVQueue(0xDEADBEAF, true);
 
 // create a logger
