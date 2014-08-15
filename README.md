@@ -17,6 +17,8 @@ $ composer require rybakit/phive-task-queue:~1.0@dev
 ## Usage example
 
 ```php
+// worker.php
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Phive\Queue\SysVQueue;
