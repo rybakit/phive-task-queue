@@ -32,16 +32,6 @@ $greeting = function (\stdClass $task, Logger $logger) {
     $logger->info(sprintf('Hello %s!', $task->name));
 };
 
-/*
-// or
-$periodical = function ($task, Queue $queue) {
-    // do something with the task
-
-    // rerun it after 1 hour
-    $queue->push($task, '+1 hour');
-}
-*/
-
 // create a queue
 // see a list of available queues: https://github.com/rybakit/phive-queue#queues
 $queue = new SysVQueue(0xDEADBEAF, true);
