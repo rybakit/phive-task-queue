@@ -11,7 +11,6 @@ $executor = create_executor(
     new SysVQueue(0xDEADBEAF, true)
 );
 
-// main loop
 while (true) {
     if (!$executor->execute()) {
         sleep(1);
