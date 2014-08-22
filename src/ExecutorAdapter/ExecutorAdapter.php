@@ -6,5 +6,5 @@ use Phive\TaskQueue\ExecutionContext;
 
 interface ExecutorAdapter
 {
-    public function execute($task, ExecutionContext $context);
+    public function execute($payload, ExecutionContext $context);
 }

@@ -2,7 +2,7 @@ Phive Task Queue
 ================
 [![Build Status](https://secure.travis-ci.org/rybakit/phive-task-queue.png?branch=master)](http://travis-ci.org/rybakit/phive-task-queue)
 
-A lightweight task queue on top of the [Phive Queue](https://github.com/rybakit/phive-queue).
+A job/task queue on top of the [Phive Queue](https://github.com/rybakit/phive-queue).
 
 
 ## Installation
@@ -26,12 +26,6 @@ use Phive\TaskQueue\ExecutionContext;
 use Phive\TaskQueue\Executor;
 use Phive\TaskQueue\ExecutorAdapter\CallableExecutorAdapter;
 
-// create a simple job which will send the greeting to the log
-// function parameters will be resolved automatically
-$greeting = function (\stdClass $task, Logger $logger) {
-    $logger->info(sprintf('Hello %s!', $task->name));
-};
-
 // create a queue
 // see a list of available queues: https://github.com/rybakit/phive-queue#queues
 $queue = new SysVQueue(0xDEADBEAF, true);
@@ -41,8 +35,12 @@ $queue = new SysVQueue(0xDEADBEAF, true);
 $logger = new Logger('worker');
 $logger->pushHandler(new StreamHandler(STDOUT, Logger::INFO));
 
-// create an executor
-$adapter = new CallableExecutorAdapter($greeting);
+// create a callback
+$callback = function ($payload, LoggerInterface $logger) {
+    $logger->info(strrev($payload));
+};
+
+$adapter = new CallbackExecutorAdapter(new DirectCallbackResolver($callback));
 $context = new ExecutionContext($queue, $logger);
 $executor = new Executor($adapter, $context);
 
@@ -61,9 +59,9 @@ use Phive\Queue\SysVQueue;
 
 $queue = new SysVQueue(0xDEADBEAF, true);
 
-// send a task/payload object to the queue and delay execution for 5 seconds
+// send a payload object to the queue and delay execution for 5 seconds
 // see supported item types: https://github.com/rybakit/phive-queue#item-types
-$queue->push((object) ['name' => 'Stranger'], '+5 seconds');
+$queue->push('Hello world!', '+5 seconds');
 ```
 
 

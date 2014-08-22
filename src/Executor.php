@@ -31,20 +31,20 @@ class Executor
         $logger = $this->context->getLogger();
 
         try {
-            $task = $this->context->getQueue()->pop();
+            $payload = $this->context->getQueue()->pop();
         } catch (NoItemAvailableException $e) {
             $logger->debug($e->getMessage(), ['exception' => $e]);
 
             return false;
         }
 
-        $logger->info('Start executing.', ['task' => $task]);
+        $logger->info('Start executing.', ['payload' => $payload]);
 
         try {
-            $this->adapter->execute($task, $this->context);
-            $logger->info('Task was successfully executed.', ['task' => $task]);
+            $this->adapter->execute($payload, $this->context);
+            $logger->info('Payload was successfully executed.', ['payload' => $payload]);
         } catch (\Exception $e) {
-            $logger->error('An error occurred while executing task.', ['task' => $task, 'exception' => $e]);
+            $logger->error('An error occurred while executing task.', ['payload' => $payload, 'exception' => $e]);
         }
 
         return true;
