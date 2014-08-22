@@ -5,14 +5,23 @@ namespace Phive\TaskQueue\ExecutorAdapter;
 use Phive\TaskQueue\ExecutionContext;
 use Symfony\Component\Process\Process;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ProcessExecutorAdapter implements ExecutorAdapter
 {
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $accessor;
+
+    public function __construct(PropertyAccessorInterface $accessor = null)
+    {
+        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+    }
+
     public function execute($payload, ExecutionContext $context)
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        if (!$commandline = $accessor->getValue($payload, 'commandline')) {
+        if (!$commandline = $this->accessor->getValue($payload, 'commandline')) {
             throw new \RuntimeException('Not supported.');
         }
 
