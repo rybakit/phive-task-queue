@@ -15,7 +15,7 @@
         "php": ">=5.4.0",
         "psr/log": "~1.0",
         "rybakit/phive-queue": "~1.0@dev",
-        "rybakit/callable-arguments-resolver": "~1.0@dev",
+        "rybakit/arguments-resolver": "~1.0@dev",
         "symfony/property-access": "~2.5"
     },
     "require-dev": {
