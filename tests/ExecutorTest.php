@@ -18,12 +18,15 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->adapter = $this->getMock('\Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter');
+        $this->adapter = $this->getMockBuilder('\Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter')->getMock();
 
-        $this->queue = $this->getMock('\Phive\Queue\Queue');
-        $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
+        $this->queue = $this->getMockBuilder('\Phive\Queue\Queue')->getMock();
+        $this->logger = $this->getMockBuilder('\Psr\Log\LoggerInterface')->getMock();
 
-        $context = $this->getMock('\Phive\TaskQueue\ExecutionContext', [], [], '', false);
+        $context = $this->getMockBuilder('\Phive\TaskQueue\ExecutionContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $context->expects($this->any())->method('getQueue')->will($this->returnValue($this->queue));
         $context->expects($this->any())->method('getLogger')->will($this->returnValue($this->logger));
 
