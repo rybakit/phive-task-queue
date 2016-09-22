@@ -2,7 +2,7 @@
 
 namespace Phive\TaskQueue\ExecutorAdapter;
 
-use ArgumentsResolver as ar;
+use ArgumentsResolver\InDepthArgumentsResolver;
 use Phive\TaskQueue\CallbackResolver\CallbackResolver;
 use Phive\TaskQueue\ExecutionContext;
 
@@ -19,7 +19,7 @@ class CallbackExecutorAdapter implements ExecutorAdapter
     {
         $callable = $this->resolver->resolve($payload, $context);
 
-        $arguments = ar\resolve_arguments($callable, [
+        $arguments = (new InDepthArgumentsResolver($callable))->resolve([
             'payload' => $payload,
             $context->getLogger(),
             $context->getQueue(),
