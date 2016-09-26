@@ -21,11 +21,7 @@ class ProcessExecutorAdapter implements ExecutorAdapter
 
     public function execute($payload, ExecutionContext $context)
     {
-        if (!$commandline = $this->accessor->getValue($payload, 'commandline')) {
-            throw new \RuntimeException('Not supported.');
-        }
-
-        $process = new Process($commandline);
+        $process = $this->createProcess($payload);
 
         $process->run(function ($type, $buffer) use ($context) {
             if (Process::ERR === $type) {
@@ -34,5 +30,22 @@ class ProcessExecutorAdapter implements ExecutorAdapter
                 $context->getLogger()->debug($buffer);
             }
         });
+    }
+
+    private function createProcess($payload)
+    {
+        if ($payload instanceof Process) {
+            return $payload;
+        }
+
+        if (is_string($payload)) {
+            return new Process($payload);
+        }
+
+        if ($commandline = $this->accessor->getValue($payload, 'commandline')) {
+            return new Process($commandline);
+        }
+
+        throw new \InvalidArgumentException('Unsupported payload type.');
     }
 }
