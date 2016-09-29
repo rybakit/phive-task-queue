@@ -33,7 +33,7 @@ class Executor
         try {
             $payload = $this->context->getQueue()->pop();
         } catch (NoItemAvailableException $e) {
-            $logger->debug($e->getMessage(), ['exception' => $e]);
+            $logger->debug($e->getMessage());
 
             return false;
         }
