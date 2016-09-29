@@ -17,17 +17,9 @@ class RetryAwarePayload
         return $this->payload;
     }
 
-    /**
-     * @return int
-     */
-    public function getRetry()
-    {
-        return $this->retry;
-    }
-
     public function incRetry()
     {
-        ++$this->retry;
+        return ++$this->retry;
     }
 
     public function __clone()

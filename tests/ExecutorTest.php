@@ -3,7 +3,11 @@
 namespace Phive\TaskQueue\Tests;
 
 use Phive\Queue\NoItemAvailableException;
+use Phive\Queue\Queue;
+use Phive\TaskQueue\ExecutionContext;
 use Phive\TaskQueue\Executor;
+use Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter;
+use Psr\Log\LoggerInterface;
 
 class ExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,12 +22,12 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->adapter = $this->getMockBuilder('\Phive\TaskQueue\ExecutorAdapter\ExecutorAdapter')->getMock();
+        $this->adapter = $this->getMockBuilder(ExecutorAdapter::class)->getMock();
 
-        $this->queue = $this->getMockBuilder('\Phive\Queue\Queue')->getMock();
-        $this->logger = $this->getMockBuilder('\Psr\Log\LoggerInterface')->getMock();
+        $this->queue = $this->getMockBuilder(Queue::class)->getMock();
+        $this->logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
 
-        $context = $this->getMockBuilder('\Phive\TaskQueue\ExecutionContext')
+        $context = $this->getMockBuilder(ExecutionContext::class)
             ->disableOriginalConstructor()
             ->getMock();
 
