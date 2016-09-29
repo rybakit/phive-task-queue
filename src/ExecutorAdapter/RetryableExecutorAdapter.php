@@ -38,7 +38,7 @@ class RetryableExecutorAdapter implements ExecutorAdapter
             }
 
             $context->getLogger()->error('An error occurred while executing the task: '.$e->getMessage(), ['payload' => $payload]);
-            $context->getQueue()->push($payload, "+$delay");
+            $context->getQueue()->push($payload, "+$delay seconds");
         }
 
         return true;

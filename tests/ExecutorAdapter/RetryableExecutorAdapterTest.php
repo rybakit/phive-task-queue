@@ -30,7 +30,7 @@ class RetryableExecutorAdapterTest extends \PHPUnit_Framework_TestCase
         $this->retryStrategy->expects($this->any())->method('getDelay')->with(1)->willReturn(42);
 
         $queue = $this->getMockBuilder(Queue::class)->getMock();
-        $queue->expects($this->once())->method('push')->with($this->isInstanceOf(RetryAwarePayload::class), '+42');
+        $queue->expects($this->once())->method('push')->with($this->isInstanceOf(RetryAwarePayload::class), '+42 seconds');
 
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
 
