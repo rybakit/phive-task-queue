@@ -1,6 +1,6 @@
 <?php
 
-namespace App\TaskQueue;
+namespace Phive\TaskQueue;
 
 class RetryAwarePayload
 {

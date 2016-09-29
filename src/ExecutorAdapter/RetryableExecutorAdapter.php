@@ -2,9 +2,9 @@
 
 namespace Phive\TaskQueue\ExecutorAdapter;
 
-use App\TaskQueue\RetryAwarePayload;
 use Phive\TaskQueue\ExecutionContext;
 use Phive\TaskQueue\ExecutionFailedException;
+use Phive\TaskQueue\RetryAwarePayload;
 use Phive\TaskQueue\RetryStrategy\RetryStrategy;
 
 class RetryableExecutorAdapter implements ExecutorAdapter
