@@ -27,20 +27,15 @@ class RetryableExecutorAdapter implements ExecutorAdapter
         try {
             return $this->adapter->execute($payload->getPayload(), $context);
         } catch (ExecutionFailedException $e) {
-            $context->getLogger()->error('Task failed: '.$e->getMessage(), ['payload' => $payload->getPayload()]);
+            throw $e;
         } catch (\Exception $e) {
             $delay = $this->retryStrategy->getDelay($payload->incRetry());
 
-            if (null === $delay) {
-                $context->getLogger()->error('Task failed: '.$e->getMessage(), ['payload' => $payload->getPayload()]);
-
-                return true;
+            if (null !== $delay) {
+                $context->getQueue()->push($payload, "+$delay seconds");
             }
 
-            $context->getLogger()->error('An error occurred while executing the task: '.$e->getMessage(), ['payload' => $payload->getPayload()]);
-            $context->getQueue()->push($payload, "+$delay seconds");
+            throw $e;
         }
-
-        return true;
     }
 }

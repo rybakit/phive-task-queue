@@ -44,7 +44,7 @@ class Executor
             $this->adapter->execute($payload, $this->context);
             $logger->info('Payload was successfully executed.', ['payload' => $payload]);
         } catch (\Exception $e) {
-            $logger->error('An error occurred while executing payload.', ['payload' => $payload, 'exception' => $e]);
+            $logger->error(sprintf('An error occurred while executing payload: %s.', $e->getMessage()), ['payload' => $payload]);
         }
 
         return true;
