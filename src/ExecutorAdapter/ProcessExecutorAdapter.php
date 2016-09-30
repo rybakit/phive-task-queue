@@ -14,9 +14,11 @@ class ProcessExecutorAdapter implements ExecutorAdapter
      */
     private $accessor;
 
-    public function __construct(PropertyAccessorInterface $accessor = null)
+    public function __construct()
     {
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->enableExceptionOnInvalidIndex()
+            ->getPropertyAccessor();
     }
 
     public function execute($payload, ExecutionContext $context)
@@ -42,8 +44,12 @@ class ProcessExecutorAdapter implements ExecutorAdapter
             return new Process($payload);
         }
 
-        if ($commandline = $this->accessor->getValue($payload, 'commandline')) {
-            return new Process($commandline);
+        if ($this->accessor->isReadable($payload, '[commandline]')) {
+            return new Process($this->accessor->getValue($payload, '[commandline]'));
+        }
+
+        if ($this->accessor->isReadable($payload, 'commandline')) {
+            return new Process($this->accessor->getValue($payload, 'commandline'));
         }
 
         throw new \InvalidArgumentException('Unsupported payload type.');

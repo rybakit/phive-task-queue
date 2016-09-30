@@ -15,20 +15,40 @@ class PimpleCallbackResolver implements CallbackResolver
     private $container;
 
     /**
+     * @var string
+     */
+    private $idPrefix;
+
+    /**
      * @var PropertyAccessorInterface
      */
     private $accessor;
 
-    public function __construct(Container $container, PropertyAccessorInterface $accessor = null)
+    public function __construct(Container $container, $idPrefix = null)
     {
         $this->container = $container;
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        $this->idPrefix = (string) $idPrefix;
+        $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->enableExceptionOnInvalidIndex()
+            ->getPropertyAccessor();
     }
 
     public function resolve($payload, ExecutionContext $context)
     {
-        $service = $this->accessor->getValue($payload, 'service');
+        $id = null;
 
-        return $this->container[$service];
+        if ($this->accessor->isReadable($payload, '[service]')) {
+            $id = $this->accessor->getValue($payload, '[service]');
+        } else if ($this->accessor->isReadable($payload, 'service')) {
+            $id = $this->accessor->getValue($payload, 'service');
+        } else if (is_array($payload) && !empty($payload[0]) && count($payload) <= 2) {
+            $id = $payload[0];
+        }
+
+        if (is_string($id)) {
+            return $this->container[$this->idPrefix.$id];
+        }
+
+        throw new \InvalidArgumentException('Unable to resolve the callback.');
     }
 }
