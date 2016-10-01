@@ -26,7 +26,9 @@ class RetryableExecutorAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->adapter->expects($this->any())->method('execute')->will($this->throwException(new \Exception()));
+        $exception = new \Exception('Foo');
+
+        $this->adapter->expects($this->any())->method('execute')->will($this->throwException($exception));
         $this->retryStrategy->expects($this->any())->method('getDelay')->with(1)->willReturn(42);
 
         $queue = $this->getMockBuilder(Queue::class)->getMock();
@@ -38,6 +40,14 @@ class RetryableExecutorAdapterTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->once())->method('getQueue')->willReturn($queue);
         $context->expects($this->any())->method('getLogger')->willReturn($logger);
 
-        $this->retryableAdapter->execute('payload', $context);
+        try {
+            $this->retryableAdapter->execute('payload', $context);
+        } catch (\Exception $e) {
+            $this->assertSame($e, $exception);
+
+            return;
+        }
+
+        $this->fail('Exception not rethrown');
     }
 }
