@@ -25,7 +25,7 @@ class RetryableExecutorAdapter implements ExecutorAdapter
         }
 
         try {
-            return $this->adapter->execute($payload->getPayload(), $context);
+            $this->adapter->execute($payload->getPayload(), $context);
         } catch (ExecutionFailedException $e) {
             throw $e;
         } catch (\Exception $e) {
