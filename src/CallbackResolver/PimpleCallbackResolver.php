@@ -35,20 +35,41 @@ class PimpleCallbackResolver implements CallbackResolver
 
     public function resolve($payload, ExecutionContext $context)
     {
-        $id = null;
-
-        if ($this->accessor->isReadable($payload, '[service]')) {
-            $id = $this->accessor->getValue($payload, '[service]');
-        } else if ($this->accessor->isReadable($payload, 'service')) {
-            $id = $this->accessor->getValue($payload, 'service');
-        } else if (is_array($payload) && !empty($payload[0]) && count($payload) <= 2) {
-            $id = $payload[0];
+        if ($result = $this->resolveByPath($payload, '[service]', '[args]')) {
+            return $result;
         }
 
-        if (is_string($id)) {
-            return $this->container[$this->idPrefix.$id];
+        if ($result = $this->resolveByPath($payload, 'service', 'args')) {
+            return $result;
         }
 
-        throw new \InvalidArgumentException('Unable to resolve the callback.');
+        if (is_array($payload) &&
+            !empty($payload) &&
+            count($payload) <= 2 &&
+            $result = $this->resolveByPath($payload, '[0]', '[1]'))
+        {
+            return $result;
+        }
+
+        throw new \InvalidArgumentException('Unable to resolve callback.');
+    }
+
+    private function resolveByPath($payload, $callablePath, $argsPath)
+    {
+        if (!$this->accessor->isReadable($payload, $callablePath)) {
+            return;
+        }
+
+        $id = $this->accessor->getValue($payload, $callablePath);
+
+        if (!is_string($id)) {
+            return;
+        }
+
+        $args = $this->accessor->isReadable($payload, $argsPath)
+            ? $this->accessor->getValue($payload, $argsPath)
+            : [];
+
+        return [$this->container[$this->idPrefix.$id], $args];
     }
 }

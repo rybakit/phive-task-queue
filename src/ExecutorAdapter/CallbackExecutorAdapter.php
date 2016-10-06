@@ -17,9 +17,9 @@ class CallbackExecutorAdapter implements ExecutorAdapter
 
     public function execute($payload, ExecutionContext $context)
     {
-        $callable = $this->resolver->resolve($payload, $context);
+        list($callable, $arguments) = $this->resolver->resolve($payload, $context);
 
-        $arguments = (new InDepthArgumentsResolver($callable))->resolve([
+        $arguments += (new InDepthArgumentsResolver($callable))->resolve([
             'payload' => $payload,
             $context->getLogger(),
             $context->getQueue(),

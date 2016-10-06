@@ -15,6 +15,6 @@ class DirectCallbackResolver implements CallbackResolver
 
     public function resolve($payload, ExecutionContext $context)
     {
-        return $this->callback;
+        return [$this->callback, $payload];
     }
 }

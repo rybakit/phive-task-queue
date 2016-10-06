@@ -10,7 +10,7 @@ interface CallbackResolver
      * @param mixed            $payload
      * @param ExecutionContext $context
      *
-     * @return callable
+     * @return array
      *
      * @throws \InvalidArgumentException
      */
