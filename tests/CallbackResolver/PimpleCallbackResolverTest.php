@@ -21,13 +21,13 @@ class PimpleCallbackResolverTest extends \PHPUnit_Framework_TestCase
 
     public function provideResolveData()
     {
-        $values = ['foo' => function () { return 'bar'; }];
+        $values = ['foo' => 'bar'];
 
         return [
-            [$values, ['foo'], 'bar'],
-            [$values, ['foo', ['arg1']], 'bar'],
-            [$values, ['service' => 'foo', 'baz' => 'qux'], 'bar'],
-            [$values, (object)['service' => 'foo', 'baz' => 'qux'], 'bar'],
+            [$values, ['foo'], ['bar', []]],
+            [$values, ['foo', ['arg1']], ['bar', ['arg1']]],
+            [$values, ['service' => 'foo', 'baz' => 'qux'], ['bar', []]],
+            [$values, (object)['service' => 'foo', 'baz' => 'qux'], ['bar', []]],
         ];
     }
 }
